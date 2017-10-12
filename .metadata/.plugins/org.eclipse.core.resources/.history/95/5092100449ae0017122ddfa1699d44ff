@@ -9,16 +9,6 @@ public class Hello {
 		tom.empAge(25);
 		tom.empSalary(1000.00);
 		tom.printInfor();
-		
-		Employee.func();
-		
-		
-		String[] names = {"one", "two", "three" };
-		for(String name : names) {
-			System.out.println(name);
-		}
 	}
-	
-	final double money = 500.00;
 	
 }

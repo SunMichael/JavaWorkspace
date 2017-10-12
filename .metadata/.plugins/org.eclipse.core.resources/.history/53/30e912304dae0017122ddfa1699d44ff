@@ -11,6 +11,7 @@ public class Employee {
 	
 	public transient int limit = 10;   //对象持久化时，不会保存
 	
+	
 	public Employee(String name) {
 		this.name = name;
 		ary[0] = 1;
@@ -32,12 +33,6 @@ public class Employee {
 	public static void func() {
 		System.out.println("class func");
 	}
-	
-	public void addSalary() {
-		for(int x = 0 ; x < 10 ; x++) {
-			this.salary += 10.f;
-		}
-	}
 }
 
 abstract class Caravan{
@@ -48,11 +43,9 @@ class SubCaravan extends Caravan{
 	public void goFast() {
 		System.out.println("abstract func");
 	}
-	
-	String name = "tom";
-	boolean result = name instanceof String;   //类型判断
-	
 }
+
+
 
 
 

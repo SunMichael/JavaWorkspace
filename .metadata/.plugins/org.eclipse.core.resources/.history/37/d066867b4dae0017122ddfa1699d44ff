@@ -32,12 +32,6 @@ public class Employee {
 	public static void func() {
 		System.out.println("class func");
 	}
-	
-	public void addSalary() {
-		for(int x = 0 ; x < 10 ; x++) {
-			this.salary += 10.f;
-		}
-	}
 }
 
 abstract class Caravan{

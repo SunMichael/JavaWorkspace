@@ -1,0 +1,10 @@
+
+1.局部变量没有默认值，要经过初始化，才可以使用。
+
+2.类变量也称为静态变量，在类中以static关键字声明
+
+3.常量是指声明为public/private，final和static类型的变量。
+
+4.静态变量可以通过：ClassName.VariableName的方式访问。
+
+
