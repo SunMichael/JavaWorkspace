@@ -1,0 +1,33 @@
+
+1.局部变量没有默认值，要经过初始化，才可以使用。
+
+2.类变量也称为静态变量，在类中以static关键字声明
+
+3.常量是指声明为public/private，final和static类型的变量。
+
+4.静态变量可以通过：ClassName.VariableName的方式访问。
+
+5.静态变量的拷贝只有一份，不同的对象获取的静态变量值可能会变（一个对象改变变量的值，另一个变量获取的是改变后的值）
+
+6.abstract修饰抽象类，抽象方法。用于类的拓展。父类提供实例化方法，但不能主动被调用，必须由子类来实现，使用子类来初始化
+6.1 抽象方法必定存在于抽象类中
+
+JAVA 的类（外部类）有 2 种访问权限: public、default(同一个包里的可以被访问)。
+而方法和变量有 4 种：public、default、protected、private。
+其中默认访问权限和 protected 很相似，有着细微的差别。
+ public 意味着任何地方的其他类都能访问。
+ default 则是同一个包的类可以访问。
+ protected 表示同一个包的类可以访问，其他的包的该类的子类也可以访问。
+ private 表示只有自己类能访问。
+修饰符：abstract、static、final
+ abstract: 表示是抽象类。 使用对象：类、接口、方法
+ static: 可以当做普通类使用，而不用先实例化一个外部类。（用他修饰后，就成了静态内部类了）。 使用对象：类、变量、方法、初始化函数（注意：修饰类时只能修饰 内部类 ）
+ final: 表示类不可以被继承。 使用对象：类、变量、方法
+ 
+ 7.使用implements实现接口继承
+public interface B {
+    public void show();
+}
+ 
+public class C implements A,B {
+}

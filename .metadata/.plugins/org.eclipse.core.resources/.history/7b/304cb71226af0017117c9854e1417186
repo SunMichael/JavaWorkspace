@@ -1,0 +1,43 @@
+package com.runoob.sun;
+
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
+
+public class Serialize {
+
+	public static void main(String[] args) {
+		User user = new User();
+		user.address = "hz";
+		user.name = "tom";
+		user.age = 24;
+		try {
+			//先filestream 后初始化object write close
+			FileOutputStream fileOut = new FileOutputStream("/tmp/user.ser");
+			ObjectOutputStream out = new ObjectOutputStream(fileOut);
+			out.writeObject(user);
+			out.close();
+			fileOut.close();
+			System.out.println("Serialized data is saved");
+			
+		}catch(IOException e){
+			
+		}
+	}
+}
+
+
+class User implements java.io.Serializable{
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	public String name;
+	public String address;
+	public int age;
+	public void sayHello() {
+		System.out.println(name + "say hello");
+	}
+	
+}
