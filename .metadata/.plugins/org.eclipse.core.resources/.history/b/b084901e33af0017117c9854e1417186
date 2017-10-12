@@ -1,4 +1,4 @@
-//package com.runoob.sun;
+package com.runoob.sun;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;

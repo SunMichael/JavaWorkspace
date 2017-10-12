@@ -19,7 +19,7 @@ public class Serialize {
 		user.name = "tom";
 		user.age = 24;
 		try {
-			//先file stream 后初始化object write close
+			//先filestream 后初始化object write close
 			FileOutputStream fileOut = new FileOutputStream("/tmp/user.ser");
 			ObjectOutputStream out = new ObjectOutputStream(fileOut);
 			out.writeObject(user);
