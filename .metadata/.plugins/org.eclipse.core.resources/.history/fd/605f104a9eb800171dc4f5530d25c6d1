@@ -1,0 +1,96 @@
+package com.runoob.sun;
+
+import java.util.List;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+
+public class Basic {
+
+	public static void main (String args[]) {
+		stringFunc();
+		arrayFunc();
+	}
+	
+	static void stringFunc() {
+		String one = "Hello World";
+		String two = "hello world";
+		
+		String obj = one.replace("o", "p");
+		obj = obj.replaceAll("He", "AB");
+		
+		obj = obj.toLowerCase();
+		obj = obj.toUpperCase();
+		
+		obj = new StringBuffer(obj).reverse().toString();
+		
+		String three = "aaa-bbb-ccc";
+		String []tmp = three.split("-");
+		for(String s : tmp) {
+			System.out.println("分割：" + s);
+		}
+		
+		one.regionMatches(2 , two ,2 , 3 );   //对比2个字符指定index2 后面3个字符是否一样
+		
+		StringBuffer result = new StringBuffer("Hello");
+		result.append("world");
+		
+		
+		System.out.println("2字符对比：" + one.equals(two));
+		System.out.println("remove:" + removeCharAt(one , 2));
+	}
+	
+	static String removeCharAt(String s, int index) {
+		return s.substring(0, index) + s.substring(index + 1);
+	}
+	
+	
+	static void arrayFunc() {
+		int ary[] = {-4, 2 , 0,-9 ,3,1};
+		Arrays.sort(ary);   //排序
+		
+		int index = Arrays.binarySearch(ary, 2);    //数组
+		ary = insertElement(ary , 10, index);
+		
+		ArrayList<String> aryList = new ArrayList<String>();   //list
+		aryList.add("A");
+		aryList.add("B");
+		Collections.reverse(aryList);   //反转
+		
+		String[] a = {"A" , "B"};
+		String[] b = {"C" , "D"};
+		List<String> list = Arrays.asList(a);
+//		for (int i = 0; i < b.length; i++) {
+//			list.add(b[i]);
+//		}
+		list.addAll(Arrays.asList(b));
+		System.out.println("ary 合并" + list.toArray());
+		
+	}
+
+	private static int[] insertElement(int[] ary, int i, int index) {
+		// TODO Auto-generated method stub
+		int length = ary.length;
+		int tmp[] = new int [length + 1];
+		System.arraycopy(ary, 0, tmp, 0, index);   //复制ary , 2个数组开始复制的位置，最后是长度
+		tmp[index] = i;
+		System.arraycopy(ary, index, tmp, index + 1, length - index);
+		return tmp;
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+}

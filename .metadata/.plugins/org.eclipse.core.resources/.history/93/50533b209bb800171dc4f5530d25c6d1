@@ -1,0 +1,39 @@
+package com.runoob.sun;
+
+public class Basic {
+
+	public static void main (String args[]) {
+		stringFunc();
+	}
+	
+	static void stringFunc() {
+		String one = "Hello World";
+		String two = "hello world";
+		
+		String obj = one.replace("o", "p");
+		obj = obj.replaceAll("He", "AB");
+		
+		obj = obj.toLowerCase();
+		obj = obj.toUpperCase();
+		
+		obj = new StringBuffer(obj).reverse().toString();
+		
+		String three = "aaa-bbb-ccc";
+		String []tmp = three.split("-");
+		for(String s : tmp) {
+			System.out.println("分割：" + s);
+		}
+		
+		one.regionMatches(2 , two ,2 , 3 );   //对比2个字符指定index2 后面3个字符是否一样
+		
+		
+		System.out.println("2字符对比：" + one.equals(two));
+		System.out.println("remove:" + removeCharAt(one , 2));
+	}
+	
+	
+
+	static String removeCharAt(String s, int index) {
+		return s.substring(0, index) + s.substring(index + 1);
+	}
+}

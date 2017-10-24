@@ -1,0 +1,19 @@
+package com.runoob.sun;
+
+public class Basic {
+
+	public static void main (String args[]) {
+		stringFunc();
+	}
+	
+	static void stringFunc() {
+		String one = "Hello World";
+		String two = "hello world";
+		System.out.println("2字符对比：" + one.compareTo(two));
+		System.out.println("remove:" + removeCharAt(one , 2));
+	}
+	
+	static String removeCharAt(String s, int index) {
+		return s.substring(0, index) + s.substring(index + 1);
+	}
+}

@@ -31,3 +31,19 @@ public interface B {
  
 public class C implements A,B {
 }
+
+
+8.创建线程可以通过实现Runnable接口来实现，和继承Thread一样
+
+
+
+
+
+
+
+
+
+
+
+
+
