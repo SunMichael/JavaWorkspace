@@ -36,9 +36,9 @@ public class C implements A,B {
 8.创建线程可以通过实现Runnable接口来实现，和继承Thread一样
 
 
+9.数据库连接需要加一个jar包。在项目文件夹点右键，property -> java build path -> add external jar
 
-
-
+10.如果数据库连接报SSL错误  在连接语句后面加/useSSL=false
 
 
 

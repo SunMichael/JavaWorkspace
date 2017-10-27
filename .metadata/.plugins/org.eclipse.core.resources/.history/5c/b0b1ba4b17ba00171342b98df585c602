@@ -1,0 +1,286 @@
+package com.runoob.sun;
+
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
+import javax.swing.text.html.HTMLDocument.Iterator;
+
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.FilenameFilter;
+import java.io.IOException;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.HashSet;
+
+public class Basic {
+
+	private static BufferedReader in;
+	private static BufferedReader reader;
+
+	public static void main (String args[]) throws IOException {
+		stringFunc();
+		arrayFunc();
+		dateFunc();
+		fileFunc();
+		listSetFunc();
+		networkFunc();
+	}
+	
+	static void stringFunc() {
+		String one = "Hello World";
+		String two = "hello world";
+		
+		String obj = one.replace("o", "p");
+		obj = obj.replaceAll("He", "AB");
+		
+		obj = obj.toLowerCase();
+		obj = obj.toUpperCase();
+		
+		obj = new StringBuffer(obj).reverse().toString();
+		
+		String three = "aaa-bbb-ccc";
+		String []tmp = three.split("-");
+		for(String s : tmp) {
+			System.out.println("分割：" + s);
+		}
+		
+		one.regionMatches(2 , two ,2 , 3 );   //对比2个字符指定index2 后面3个字符是否一样
+		
+		StringBuffer result = new StringBuffer("Hello");
+		result.append("world");
+		
+		
+		System.out.println("2字符对比：" + one.equals(two));
+		System.out.println("remove:" + removeCharAt(one , 2));
+	}
+	
+	static String removeCharAt(String s, int index) {
+		return s.substring(0, index) + s.substring(index + 1);
+	}
+	
+	
+	static void arrayFunc() {
+		int ary[] = {-4, 2 , 0,-9 ,3,1};
+		Arrays.sort(ary);   //排序
+		
+		int index = Arrays.binarySearch(ary, 2);    //数组
+		ary = insertElement(ary , 10, index);
+		
+		ArrayList<String> aryList = new ArrayList<String>();   //list
+		aryList.add("A");
+		aryList.add("B");
+		aryList.remove(1);
+		Collections.reverse(aryList);   //反转
+		
+		ArrayList<String> oneAry = new ArrayList<String>();
+		ArrayList<String> secAry = new ArrayList<String>();
+		oneAry.add("A");
+		oneAry.add("B");
+		secAry.add("A");
+		oneAry.containsAll(secAry);     //包含
+		oneAry.removeAll(secAry);       //差集
+		oneAry.retainAll(secAry);       //交集
+		
+
+		
+		
+		String[] a = {"A" , "B"};
+		String[] b = {"C" , "D"};
+		List<String> list = new ArrayList<String>( Arrays.asList(a) );
+//		for (int i = 0; i < b.length; i++) {
+//			list.add(b[i]);
+//		}
+		list.addAll(Arrays.asList(b));
+		System.out.println("ary 合并" + list.toArray());
+		
+		int array[] = new int[6];
+//        Arrays.fill(array, 100);
+        for (int i=0, n=array.length; i < n; i++) {
+            System.out.println(array[i]);
+        }
+		
+	}
+
+
+	private static int[] insertElement(int[] ary, int i, int index) {
+		// TODO Auto-generated method stub
+		int length = ary.length;
+		int tmp[] = new int [length + 1];
+		System.arraycopy(ary, 0, tmp, 0, index);   //复制ary , 2个数组开始复制的位置，最后是长度
+		tmp[index] = i;
+		System.arraycopy(ary, index, tmp, index + 1, length - index);
+		return tmp;
+	}
+	
+//	@Deprecated
+	static void dateFunc() {
+		SimpleDateFormat sdf = new SimpleDateFormat();
+		sdf.applyPattern("yyyy-MM-dd HH:mm:ss");
+		Date date = new Date();
+		System.out.println("现在时间：" + sdf.format(date));
+		
+		long timeStamp = System.currentTimeMillis();
+		
+		new Date(Long.parseLong(String.valueOf(timeStamp)));    //时间戳转时间
+	}
+	
+	static void fileFunc() throws IOException {
+		try {
+			BufferedWriter out = new BufferedWriter(new FileWriter("runoob.txt")); //文件名
+			out.write("写入文件");  //写入内容
+			out.close();
+			System.out.println("文件创建成功");
+		}catch (IOException e) {
+			
+		}
+		
+		try {
+			in = new BufferedReader(new FileReader("runoob.txt"));
+			String str;
+			while((str = in.readLine()) != null) {
+				System.out.println("读取的内容：" + str);
+			}
+		}catch (IOException e) {
+			
+		}
+		
+		File file = new File("runoob.txt");
+		if(file.delete()) {
+			System.out.println(file.getName() + "文件被删除");
+		}else {
+			System.out.println(file.getName() + "文件删除失败");
+		}
+		
+		try {
+			BufferedWriter out1 = new BufferedWriter(new FileWriter("copyfile.txt"));
+			out1.write("hello world");
+			out1.close();
+			FileInputStream inStream = new FileInputStream(new File("copyfile.txt"));
+			FileOutputStream  outStream = new FileOutputStream(new File("postfile.txt"));
+			
+			byte[] buf = new byte[1024];
+			while ((inStream.read(buf)) > 0){
+				outStream.write(buf);
+			}
+			inStream.close();
+			outStream.close();
+			
+			reader = new BufferedReader(new FileReader("postfile.txt"));
+			String str;
+			while((str = reader.readLine()) != null) {
+				System.out.println("复制文件内容：" + str);
+			}
+			reader.close();
+		}catch (IOException e) {
+			
+		}
+		
+		try {
+			File fileChange = new File("copyfile.txt");
+			fileChange.createNewFile();
+			Date fileTime = new Date(fileChange.lastModified());
+			fileChange.setLastModified(System.currentTimeMillis());
+			fileTime = new Date(fileChange.lastModified());
+			System.out.println("修改文件日期：" + fileTime.toString());
+		} catch (IOException e) {
+			
+		}
+		
+		File oneFile = new File("name1");
+		oneFile.createNewFile();    //要调用一下create new，创建空文件
+		File secFile = new File("name2");
+		if (oneFile.renameTo(secFile)) {
+			System.out.println("文件已更名");
+		}
+		System.out.println("文件权限存在："+ secFile.exists());  //文件是否存在
+		oneFile.setReadOnly();
+		System.out.println("文件权限只读："+ oneFile.canWrite()); 
+		
+		File tmpFile = new File("src/" , "tmp.txt");
+		tmpFile.createNewFile(); 
+		System.out.println("文件权限存在："+ tmpFile.exists() + "\n路径:" + tmpFile.getAbsolutePath());
+		
+		File dir = new File("src");
+		String [] child = dir.list();
+		for (String str : child) {
+			System.out.println("文件夹目录："+ str);
+		}
+			
+		FilenameFilter filter  = new FilenameFilter() {     //实现interface
+			public boolean accept(File dir, String name) {
+				return name.startsWith("t");
+			}
+		};
+		String[] filterAry = dir.list(filter);   //使用一个filter来查找
+		if (filterAry == null) { 
+			System.out.println("未找到t开头的文件");
+		}else {
+			System.out.println("找到t开头的文件");
+		}
+		
+	}
+	
+	
+ 	 static void listSetFunc(){
+		
+ 		 Set<String> set = new HashSet<String>();
+ 		 set.add("AAA");
+ 		 set.add("BBB");
+ 		 set.remove("BBB");
+ 		 
+ 		 List<String> list = new ArrayList<String>();
+ 		 list.add("CCC");
+ 		 list.add("DDD");
+ 		 list.add("EEE");
+ 		 list.add("FFF");
+ 		 list.remove(1);
+ 		 
+ 		 List<String> sublist = Arrays.asList("aa bb cc dd".split(" "));
+ 		 System.out.println("集合分割：" + sublist);
+ 		 
+ 		 Collections.replaceAll(list, "CCC", "one");
+ 		 Collections.rotate(list, 1);
+ 		 System.out.println("list循环移动元素：" + list);
+ 		 System.out.println("最大值：" + Collections.max(list));
+ 		 System.out.println("最小值：" + Collections.min(list));
+ 		 
+ 		 for (String value : list) {
+ 			 System.out.println("集合遍历：" + value);
+ 		 }
+ 		 
+ 		 Map<String, String> maps = new HashMap<String, String>();
+ 		 maps.put("key1", "value");
+ 		 maps.put("key2", "value2");
+ 		 
+	}
+	
+	
+	static void networkFunc() {
+		InetAddress address = null;
+		try {
+			address = InetAddress.getByName("www.baidu.com");
+		}catch(UnknownHostException e) {
+			System.exit(2);
+		}
+		System.out.println(address.getHostName() +  "=" + address.getHostAddress());
+	}
+	
+	
+	
+	
+	
+	
+}

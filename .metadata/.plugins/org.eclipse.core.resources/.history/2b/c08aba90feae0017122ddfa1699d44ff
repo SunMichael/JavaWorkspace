@@ -1,7 +1,0 @@
-package com.runoob.sun;
-
-import javaDemo.Employee;  //不同包之间的类调用 使用import
-
-public class Runnoob {
-	Employee one;
-}

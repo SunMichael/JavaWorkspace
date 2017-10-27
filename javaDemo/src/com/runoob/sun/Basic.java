@@ -1,18 +1,48 @@
 package com.runoob.sun;
 
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
+import javax.swing.text.html.HTMLDocument.Iterator;
+
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.FilenameFilter;
+import java.io.IOException;
+import java.net.InetAddress;
+import java.net.MalformedURLException;
+import java.net.Socket;
+import java.net.URL;
+import java.net.URLConnection;
+import java.net.UnknownHostException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.HashSet;
 
 public class Basic {
 
-	public static void main (String args[]) {
+	private static BufferedReader in;
+	private static BufferedReader reader;
+
+	public static void main (String args[]) throws IOException {
 		stringFunc();
 		arrayFunc();
 		dateFunc();
+		fileFunc();
+		listSetFunc();
+		networkFunc(args);
+		httpConnectFunc();
+		
 	}
 	
 	static void stringFunc() {
@@ -113,15 +143,185 @@ public class Basic {
 		new Date(Long.parseLong(String.valueOf(timeStamp)));    //时间戳转时间
 	}
 	
+	static void fileFunc() throws IOException {
+		try {
+			BufferedWriter out = new BufferedWriter(new FileWriter("runoob.txt")); //文件名
+			out.write("写入文件");  //写入内容
+			out.close();
+			System.out.println("文件创建成功");
+		}catch (IOException e) {
+			
+		}
+		
+		try {
+			in = new BufferedReader(new FileReader("runoob.txt"));
+			String str;
+			while((str = in.readLine()) != null) {
+				System.out.println("读取的内容：" + str);
+			}
+		}catch (IOException e) {
+			
+		}
+		
+		File file = new File("runoob.txt");
+		if(file.delete()) {
+			System.out.println(file.getName() + "文件被删除");
+		}else {
+			System.out.println(file.getName() + "文件删除失败");
+		}
+		
+		try {
+			BufferedWriter out1 = new BufferedWriter(new FileWriter("copyfile.txt"));
+			out1.write("hello world");
+			out1.close();
+			FileInputStream inStream = new FileInputStream(new File("copyfile.txt"));
+			FileOutputStream  outStream = new FileOutputStream(new File("postfile.txt"));
+			
+			byte[] buf = new byte[1024];
+			while ((inStream.read(buf)) > 0){
+				outStream.write(buf);
+			}
+			inStream.close();
+			outStream.close();
+			
+			reader = new BufferedReader(new FileReader("postfile.txt"));
+			String str;
+			while((str = reader.readLine()) != null) {
+				System.out.println("复制文件内容：" + str);
+			}
+			reader.close();
+		}catch (IOException e) {
+			
+		}
+		
+		try {
+			File fileChange = new File("copyfile.txt");
+			fileChange.createNewFile();
+			Date fileTime = new Date(fileChange.lastModified());
+			fileChange.setLastModified(System.currentTimeMillis());
+			fileTime = new Date(fileChange.lastModified());
+			System.out.println("修改文件日期：" + fileTime.toString());
+		} catch (IOException e) {
+			
+		}
+		
+		File oneFile = new File("name1");
+		oneFile.createNewFile();    //要调用一下create new，创建空文件
+		File secFile = new File("name2");
+		if (oneFile.renameTo(secFile)) {
+			System.out.println("文件已更名");
+		}
+		System.out.println("文件权限存在："+ secFile.exists());  //文件是否存在
+		oneFile.setReadOnly();
+		System.out.println("文件权限只读："+ oneFile.canWrite()); 
+		
+		File tmpFile = new File("src/" , "tmp.txt");
+		tmpFile.createNewFile(); 
+		System.out.println("文件权限存在："+ tmpFile.exists() + "\n路径:" + tmpFile.getAbsolutePath());
+		
+		File dir = new File("src");
+		String [] child = dir.list();
+		for (String str : child) {
+			System.out.println("文件夹目录："+ str);
+		}
+			
+		FilenameFilter filter  = new FilenameFilter() {     //实现interface
+			public boolean accept(File dir, String name) {
+				return name.startsWith("t");
+			}
+		};
+		String[] filterAry = dir.list(filter);   //使用一个filter来查找
+		if (filterAry == null) { 
+			System.out.println("未找到t开头的文件");
+		}else {
+			System.out.println("找到t开头的文件");
+		}
+		
+	}
 	
 	
+ 	 static void listSetFunc(){
+		
+ 		 Set<String> set = new HashSet<String>();
+ 		 set.add("AAA");
+ 		 set.add("BBB");
+ 		 set.remove("BBB");
+ 		 
+ 		 List<String> list = new ArrayList<String>();
+ 		 list.add("CCC");
+ 		 list.add("DDD");
+ 		 list.add("EEE");
+ 		 list.add("FFF");
+ 		 list.remove(1);
+ 		 
+ 		 List<String> sublist = Arrays.asList("aa bb cc dd".split(" "));
+ 		 System.out.println("集合分割：" + sublist);
+ 		 
+ 		 Collections.replaceAll(list, "CCC", "one");
+ 		 Collections.rotate(list, 1);
+ 		 System.out.println("list循环移动元素：" + list);
+ 		 System.out.println("最大值：" + Collections.max(list));
+ 		 System.out.println("最小值：" + Collections.min(list));
+ 		 
+ 		 for (String value : list) {
+ 			 System.out.println("集合遍历：" + value);
+ 		 }
+ 		 
+ 		 Map<String, String> maps = new HashMap<String, String>();
+ 		 maps.put("key1", "value");
+ 		 maps.put("key2", "value2");
+ 		 
+	}
 	
 	
+	static void networkFunc(String[] args) throws IOException {
+		InetAddress address = null;
+		try {
+			address = InetAddress.getByName("www.baidu.com");
+		}catch(UnknownHostException e) {
+			System.exit(2);
+		}
+		System.out.println(address.getHostName() +  "=" + address.getHostAddress());
+		
+		try {
+			address = InetAddress.getLocalHost();
+		}catch (UnknownHostException e) {
+			
+		}
+		System.out.println(address.getHostName() +  "=" + address.getHostAddress());
+		
+		Socket skt;
+		String host = "localhost";
+		if(args.length > 0) {
+			host = args[0];
+		}
+		for(int i = 0; i < 1024 ; i++) {
+			try {
+				System.out.println("check "+ i);
+				skt = new Socket(host ,i );   // 连接host某个端口号，如果连接失败说明被占用 会catch break
+				System.out.println("端口号 " + i + "已被使用");
+			}catch (UnknownHostException e) {
+				break;
+			}catch (IOException e) {
+				
+			}
+		}
+	}
 	
 	
-	
-	
-	
+	static void httpConnectFunc() throws IOException {
+		URL url = new URL("http://www.baidu.com");
+		URLConnection cnt = url.openConnection();
+		
+		Map<String, ?> headers = cnt.getHeaderFields();
+		Set<String> keys = headers.keySet();
+		for(String key : keys) {
+			String value = cnt.getHeaderField(key);
+			System.out.println(key + ":" + value);
+		}
+		
+		System.out.println("修改时间："+ cnt.getLastModified());
+	}
 	
 	
 	
